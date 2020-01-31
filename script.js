@@ -141,7 +141,7 @@ class CityMap {
             cityList.removeChild(cityList.firstChild);
         }
         for (let city of this.cities) {
-            if(city.stateAbbr === stateAbbr.value) { //city.stateAbbr.localeCompare(stateAbbr)
+            if(city.stateAbbr === stateAbbr.value) { 
                 let liElem = document.createElement('li');
                 liElem.textContent = city.cityName;
                 cityList.appendChild(liElem);
@@ -174,7 +174,7 @@ class CityMap {
         addInfo.forEach((item) => {
             item.value = '';
         });
-
+        this.theMostTypeCity();
         this.getStates();  
         this.getAllCities();  
         this.searchCities();        
