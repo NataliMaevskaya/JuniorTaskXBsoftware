@@ -175,6 +175,7 @@ class CityMap {
             item.value = '';
         });
         this.theMostTypeCity();
+        this.findTheClosestCity();
         this.getStates();  
         this.getAllCities();  
         this.searchCities();        
