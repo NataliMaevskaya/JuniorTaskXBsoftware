@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Test task for XB Software</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous"> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/primitive-ui/dist/css/main.css" /> -->
+</head>
+
+<body>
+    <div class="most">
+        <p>Choose the type of the city: </p>
+        <select id="city-type">
+            <option value="nothernmost">Nothernmost</option>
+            <option value="easternmost">Easternmost</option>
+            <option value="southernmost">Southernmost</option>
+            <option value="westernmost">Westernmost</option>
+        </select>
+
+        <strong> city is </strong>  
+        <input type="text" name="typeResult" id="type-result" disabled>
+    </div>
+    
+    <div class="closest">
+            <p>Enter latitude and longitude of the point:</p>
+            <input type="text" name="latitude" id="latitude" placeholder="Enter numbers with dot" required>
+            <input type="text" name="longitude" id="longitude" placeholder="Enter numbers with dot" required>
+            <button id="closest-btn">Closest city</button>
+            
+            <input type="text" name="closest-res" id="closest-res" disabled>        
+    </div>
+
+    <div class="state">
+        <p>States list:</p>
+        <!-- <input type="text" name="states-res" id="states-res" disabled> -->
+        <p id="states-res" disabled></p>
+    </div>
+    
+    <div class="add-city">
+        <p>Add city information:</p>
+        <input type="text" id="city-name" placeholder="Enter city name" required>
+        <input type="text" id="state-name" placeholder="Enter state abbreviation" required>
+        <input type="text" id="city-latitude" placeholder="Enter latitude of the city" required>
+        <input type="text" id="city-longitude" placeholder="Enter longitude of the city" required>    
+        <button id="add-btn">Add city info</button>    
+    </div>
+
+    <div class="local-storage">
+        <p>List of all cities:</p>
+        <ul id="all-cities"></ul>
+        <button id="save-ls">Save to Local Storage</button>
+        <button id="clear-ls">Clear Local Storage</button>
+    </div>
+
+    <div class="select-state">
+        <p>Search by the state:</p>
+        <input type="text" id="search-name" placeholder="Enter state abbreviation">
+        <!-- <select id="state-abbr">
+        </select> -->
+        <ul id="city-list">
+        </ul>
+        
+    </div>
+    
+
+    
+
+
+<script src="script.js"></script>   
+</body>
+</html>
