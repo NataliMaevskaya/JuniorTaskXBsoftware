@@ -1,6 +1,7 @@
 'use strict';
 
-const closestBtn = document.getElementById('closest-btn'),
+const cityType = document.getElementById('city-type'),
+    closestBtn = document.getElementById('closest-btn'),
     latitude = document.getElementById('latitude'),        
     longitude = document.getElementById('longitude'),
     stateAbbr = document.getElementById('state-abbr'),
@@ -16,11 +17,12 @@ const closestBtn = document.getElementById('closest-btn'),
 
 class City {
     constructor(cityName, stateAbbr, latitude, longitude) {
+
         this.cityName = cityName;
         this.stateAbbr = stateAbbr;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.deltaAB = 0;
+        this.deltaAB = 0;  
     }
 }
 class CityMap {
@@ -46,28 +48,29 @@ class CityMap {
         } else {
             this.cities = JSON.parse(localStorage.getItem('items'));
         }
+        this.eventListeners();
+        this.theMostTypeCity();
+        this.getStates();
+        this.getAllCities();
+        this.searchCities();
     }
     theMostTypeCity() {
-        const cityType = document.querySelector('#city-type');
-        const typeResult = document.querySelector('#type-result');
+        const cityType = document.getElementById('city-type');
+        const typeResult = document.getElementById('type-result');
         switch(cityType.value) {
             case "nothernmost": 
-                typeResult.value = this.cities.sort(byFieldDesc('latitude'))[0].cityName;        
+                typeResult.value = this.cities.sort(this.byFieldDesc('latitude'))[0].cityName;        
                 break;
             case "easternmost": 
-                typeResult.value = this.cities.sort(byFieldDesc('longitude'))[0].cityName;
+                typeResult.value = this.cities.sort(this.byFieldDesc('longitude'))[0].cityName;
                 break;
             case "southernmost":
-                typeResult.value = this.cities.sort(byFieldAsc('latitude'))[0].cityName;
+                typeResult.value = this.cities.sort(this.byFieldAsc('latitude'))[0].cityName;
                 break;
             case "westernmost": 
-                typeResult.value = this.cities.sort(byFieldAsc('longitude'))[0].cityName;
+                typeResult.value = this.cities.sort(this.byFieldAsc('longitude'))[0].cityName;
                 break;
         }
-
-        cityType.addEventListener('change', this.theMostTypeCity.bind(this));
-        
-
     }
     findTheClosestCity() {
         const latitude = document.getElementById('latitude'),        
@@ -92,7 +95,7 @@ class CityMap {
                 minDeltaAB = city.deltaAB;
             }
         }
-        tempArray.sort(byFieldAsc('deltaAB'));
+        tempArray.sort(this.byFieldAsc('deltaAB'));
         closestRes.value = tempArray[0].cityName;            
     }
     deltaAB(point1, point2) {
@@ -105,7 +108,6 @@ class CityMap {
         
         const statesArr = this.getUniqueStatesArr();
         statesRes.textContent = statesArr;
-        // this.createStateSelect(statesArr);
     }
     getUniqueStatesArr() {
         let statesList = [];
@@ -118,8 +120,7 @@ class CityMap {
         statesList = [...uniqueSet];
         return statesList.sort();
     }
-    createStateSelect(statesArr) {
-        // console.log('statesArr: ', statesArr);
+    /*createStateSelect(statesArr) {
         while (stateAbbr.firstChild) {
             stateAbbr.removeChild(stateAbbr.firstChild);
         }
@@ -130,12 +131,9 @@ class CityMap {
             option.innerText = state;
             stateAbbr.append(option);
         }
-       
-        this.getStateCities();
-        stateAbbr.addEventListener('change', this.getStateCities.bind(this));//, stateAbbr.value
 
-        
-    }
+        this.getStateCities();      
+    }*/
     getStateCities() {
         while (cityList.firstChild) {
             cityList.removeChild(cityList.firstChild);
@@ -154,11 +152,8 @@ class CityMap {
             e.preventDefault();
         }
     }
-    checkEnteredCoord(coordinate) {
-        // сделать проверку, если придумаю
-    }
     addCityInfo() {
-        const addCity = document.querySelector('.add-city'),
+        const addCity = document.getElementById('add-city'),
         addInfo = addCity.querySelectorAll('input[type="text"]');
 
         if(!addInfo[0].value || !addInfo[1].value || !addInfo[2].value || !addInfo[3].value) {
@@ -210,7 +205,7 @@ class CityMap {
             allCitites.removeChild(allCitites.firstChild);
         }
         
-        this.cities = this.cities.sort(byFieldAsc('cityName'));
+        this.cities = this.cities.sort(this.byFieldAsc('cityName'));
         this.cities.forEach(item => {
             this.addLi(item.cityName);
         });
@@ -239,10 +234,16 @@ class CityMap {
                 liElem.textContent = `${city.cityName}, ${city.stateAbbr}`;
                 cityList.appendChild(liElem);
             }
-        }
-        
+        }        
+    }
+    byFieldAsc(field) {
+        return (a, b) => a[field] > b[field] ? 1 : -1;
+    }
+    byFieldDesc(field) {
+        return (a, b) => a[field] < b[field] ? 1 : -1;
     }
     eventListeners() {
+        cityType.addEventListener('change', this.theMostTypeCity.bind(this));
         latitudes.forEach((item) => {
             item.addEventListener('keypress', this.checkNumbersAndDot);
         });
@@ -258,6 +259,7 @@ class CityMap {
         clearLs.addEventListener('click', this.clearLocalStorage.bind(this));
         search.addEventListener('input', this.searchCities.bind(this));
 
+        // stateAbbr.addEventListener('change', this.getStateCities.bind(this));  
     }
 }
 
@@ -270,19 +272,7 @@ const cities = localStorage.getItem('items') ? new CityMap('') :
                                                         "Los Angeles, CA", 34.05, -118.24;
                                                         "Memphis, TN", 35.15, -90.05;`);
 
-cities.eventListeners();
-cities.theMostTypeCity();
-cities.getStates();
-cities.getAllCities();
-cities.searchCities();
 
-
-function byFieldAsc(field) {
-    return (a, b) => a[field] > b[field] ? 1 : -1;
-}
-function byFieldDesc(field) {
-    return (a, b) => a[field] < b[field] ? 1 : -1;
-}
   
   
 
